@@ -8,6 +8,8 @@ packages = [{include = "delivery_api"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+fastapi = "^0.104.1"
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
 
 
 [build-system]
