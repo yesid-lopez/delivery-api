@@ -1,6 +1,42 @@
 services:
   app:
-    build:
-      context: .
+    image: delivery-api:prod
+    environment:
+      - MODEL_WEIGHTS_PATH=/artifacts/model_artifact.json
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./artifacts:/artifacts
+    depends_on:
+      - redis
+    networks:
+      - redis-network
     ports:
       - 8000:8000
+
+  redis:
+    image: "redis:latest"
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - redis-network
+
+  cache_runner:
+    image: cache-runner:latest
+    volumes:
+      - ./cache_utils:/cache_utils
+    command: tail -f /dev/null
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    networks:
+      - redis-network
+
+networks:
+  redis-network:

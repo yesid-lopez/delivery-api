@@ -1,0 +1,12 @@
+services:
+  app:
+    image: delivery-api:dev
+    command: python -m delivery_api
+    environment:
+      - RELOAD=True
+    volumes:
+      - ./delivery_api:/app/delivery_api
+
+  redis:
+    ports:
+      - "6379:6379"
