@@ -29,6 +29,8 @@ cache-runner:
 ## code style ##
 ################
 
+type-check, lint: app-dev
+
 type-check:
 	$(RUN_APP) mypy $(APP)
 
@@ -41,6 +43,8 @@ lint:
 ## tests ##
 ###########
 
+unit-test: app-dev
+
 unit-test:
 	$(RUN_APP) pytest tests
 
@@ -48,7 +52,7 @@ unit-test:
 ## utils ##
 ###########
 
-seed_redis:
+seed-redis:
 	$(DC_EXEC) cache_runner python insert_venue_preparation.py
 
 #################################
@@ -57,6 +61,9 @@ seed_redis:
 
 run-dev: DC_FILES += docker-compose.dev.yml
 run-dev:
+	$(DC) up
+
+run:
 	$(DC) up
 
 down:
