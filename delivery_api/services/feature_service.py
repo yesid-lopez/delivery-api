@@ -29,7 +29,7 @@ class FeatureService:
         avg_preparation_time = self.redis_client.get(self.raw_order.venue_id)
 
         if not avg_preparation_time:
-            raise VenueError("Venue error is not in cache")
+            raise VenueError("Venue does not exist in cache")
 
         return avg_preparation_time
 
