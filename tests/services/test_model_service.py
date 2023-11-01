@@ -1,14 +1,12 @@
 import numpy as np
-import pytest
 from pytest import raises, fixture
-from unittest.mock import patch, MagicMock
 
 from delivery_api.models.delivery_prediction import DeliveryPrediction
 from delivery_api.models.preprocessed_order import PreprocessedOrder
 from delivery_api.services.model_service import ModelService
 
 
-@pytest.fixture
+@fixture
 def mock_xgb_regressor(mocker):
     mock = mocker.patch(
         'delivery_api.services.model_service.XGBRegressor',
