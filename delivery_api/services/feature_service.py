@@ -1,5 +1,6 @@
 import logging
 
+from delivery_api.errors.venue_error import VenueError
 from delivery_api.models.preprocessed_order import PreprocessedOrder
 from delivery_api.models.raw_order import RawOrder
 from delivery_api.utils.redis_client import RedisClient
@@ -26,6 +27,10 @@ class FeatureService:
         :return: average preparation time
         """
         avg_preparation_time = self.redis_client.get(self.raw_order.venue_id)
+
+        if not avg_preparation_time:
+            raise VenueError("Venue error is not in cache")
+
         return avg_preparation_time
 
     def get_hour_of_day_feature(self) -> int:

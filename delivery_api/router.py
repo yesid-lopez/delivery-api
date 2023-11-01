@@ -2,8 +2,9 @@ import logging
 import os
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
+from delivery_api.errors.venue_error import VenueError
 from delivery_api.models.delivery_prediction import DeliveryPrediction
 from delivery_api.models.raw_order import RawOrder
 from delivery_api.services.feature_service import FeatureService
@@ -44,11 +45,14 @@ def predict(raw_order: RawOrder) -> DeliveryPrediction:
     :param raw_order: RawOrder
     :return: delivery duration predicted
     """
-    feature_service = FeatureService(raw_order)
-    preprocessed_order = feature_service.preprocess()
+    try:
+        feature_service = FeatureService(raw_order)
+        preprocessed_order = feature_service.preprocess()
 
-    model_service = ModelService()
-    return model_service.predict(preprocessed_order)
+        model_service = ModelService()
+        return model_service.predict(preprocessed_order)
+    except VenueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 def run() -> None:
