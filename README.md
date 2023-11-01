@@ -28,6 +28,8 @@ Main Tools and libraries:
 - The logging has been added in the current application in order to add in the future Prometheus/Grafana to monitor the data drifting, AB test analysis and monitor the general performance of the model.
 - Add integration and e2e tests for a better testing coverage.
 - Currently, the application is designed to make inferences on one order at a time. If batch inference is intended, the current implementation must be changed to support that
+- If the preprocessing step becomes more complex in the future, create an external service to take care of this.
+
 ## Examples of request
 
 ### Successful request
