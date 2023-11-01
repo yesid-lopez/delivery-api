@@ -20,7 +20,7 @@ class ModelService:
         Loads the model's checkpoint
         """
         model_weights_path = os.getenv("MODEL_WEIGHTS_PATH")
-        assert model_weights_path
+        assert model_weights_path, "Model weights path does not exist"
 
         self.model = XGBRegressor()
         self.model.load_model(model_weights_path)

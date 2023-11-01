@@ -14,6 +14,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
@@ -50,8 +51,18 @@ def predict(raw_order: RawOrder) -> DeliveryPrediction:
         preprocessed_order = feature_service.preprocess()
 
         model_service = ModelService()
-        return model_service.predict(preprocessed_order)
+        delivery_duration = model_service.predict(preprocessed_order)
+
+        logger.info(
+            "Delivery duration predicted successfully",
+            extra={
+                "order": raw_order,
+                "delivery_duration": delivery_duration
+            }
+        )
+        return delivery_duration
     except VenueError as e:
+        logger.error("Error on the venue", extra={"error message": str(e)})
         raise HTTPException(status_code=400, detail=str(e)) from e
 
 
