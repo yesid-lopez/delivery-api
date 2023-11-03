@@ -44,7 +44,7 @@ def test_get_avg_preparation_time_feature_missing_venue(mocker, raw_order: RawOr
         feature_service.get_avg_preparation_time_feature()
 
     # Assert
-    assert "Venue error is not in cache" in str(exc_info.value)
+    assert "Venue does not exist in cache" in str(exc_info.value)
 
 
 def test_get_hour_of_day_feature_valid(mocker, raw_order: RawOrder):
